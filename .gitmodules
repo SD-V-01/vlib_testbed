@@ -1,0 +1,4 @@
+[submodule "v"]
+	path = v
+	url = git@github.com:SD-V-01/vlib.git
+	branch = main
