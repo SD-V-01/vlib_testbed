@@ -17,9 +17,9 @@ assembler = nasm
 compiler_c = clang
 linker = ld.lld
 bin_folder = bin
-vlib_folder = vlib_ln
+vlib_folder = v
 
-rt_flags = -O2 -g -DVLIB_REMOVE_TOSTR_FUNC -DVSYS_DEBUG -nodefaultlibs -pthread -fPIC -I ./ -nostdlib -fno-exceptions -fno-builtin # --for-linker=-nostartfiles
+rt_flags = -O2 -g -DVLIB_REMOVE_TOSTR_FUNC -DVSYS_DEBUG -nodefaultlibs -pthread -fPIC -I $(vlib_folder) -nostdlib -fno-exceptions -fno-builtin # --for-linker=-nostartfiles
 rt_link = -lpthread -L/usr/lib64
 
 # assembling

@@ -12,8 +12,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#include "../v.h"
-#include "../system.h"
+#include "v.h"
+#include "system.h"
 
 //#define REMOVE_USRCODE
 
