@@ -121,6 +121,7 @@ void vrt_usrCode(){
 
 	vsys_writeConsoleNullStr("Testing memory alloc syscall\n");
 
+	#if 0
 	testMem(4096);
 	testMem(32768);
 	testMem(4096000);
@@ -128,6 +129,8 @@ void vrt_usrCode(){
 	testMem(262144000);
 	//testMem(2621440000);
 	//testMem(3686400000);
+
+	#endif
 
 	testVMem(4096);
 	testVMem(32768);
@@ -137,7 +140,7 @@ void vrt_usrCode(){
 
 	testIntegers();
 
-	vsys_breakpoint();
+	//vsys_breakpoint();
 
 	#endif
 

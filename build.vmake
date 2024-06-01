@@ -15,15 +15,15 @@
 compiler = clang++
 assembler = nasm
 compiler_c = clang
-linker = ld.lld
+linker = clang++
 bin_folder = bin
 vlib_folder = v
 
-rt_flags = -O2 -g -DVLIB_REMOVE_TOSTR_FUNC -DVSYS_DEBUG -nodefaultlibs -pthread -fPIC -I $(vlib_folder) -nostdlib -fno-exceptions -fno-builtin # --for-linker=-nostartfiles
-rt_link = -lpthread -L/usr/lib64
+rt_flags = -O2 -g -DVLIB_REMOVE_TOSTR_FUNC -DVSYS_DEBUG -pthread -fPIC -I $(vlib_folder) -nostdlib -fno-exceptions -fno-builtin # --for-linker=-nostartfiles
+rt_link = 
 
 # compiling
-: foreach $(vlib_folder)/*.cpp |> $(compiler) -DVLIB_NO_ALLOCATOR -c %f -o %o $(rt_flags) |> $(bin_folder)/%B.o
+: foreach $(vlib_folder)/*.cpp |> $(compiler) -DVLIB_ON_CRT -c %f -o %o $(rt_flags) |> $(bin_folder)/%B.o
 : foreach $(vlib_folder)/mimalloc/alloc.c $(vlib_folder)/mimalloc/alloc-aligned.c $(vlib_folder)/mimalloc/alloc-posix.c $(vlib_folder)/mimalloc/arena.c $(vlib_folder)/mimalloc/bitmap.c $(vlib_folder)/mimalloc/heap.c $(vlib_folder)/mimalloc/init.c $(vlib_folder)/mimalloc/libc.c $(vlib_folder)/mimalloc/options.c $(vlib_folder)/mimalloc/os.c $(vlib_folder)/mimalloc/page.c $(vlib_folder)/mimalloc/random.c $(vlib_folder)/mimalloc/segment.c $(vlib_folder)/mimalloc/segment-map.c $(vlib_folder)/mimalloc/stats.c $(vlib_folder)/mimalloc/prim/prim.c |> $(compiler_c) -c %f -o %o $(rt_flags) |> $(bin_folder)/%B.o
 : tests/main.cpp |> $(compiler) -c %f -o %o $(rt_flags) |> $(bin_folder)/%B.o
 

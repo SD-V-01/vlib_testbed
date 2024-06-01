@@ -35,6 +35,8 @@
 		<Defines>
 			<Define>TENX_PARSER</Define>
 			<Define>__unix__</Define>
+			<Define>VLIB_ON_CRT</Define>
+			<Define>__linux__</Define>
 		</Defines>
 		<ConfigProperties>
 			<ConfigAndPlatform>
