@@ -18,6 +18,7 @@
 		<RunCommand></RunCommand>
 		<RunCommandWorkingDirectory></RunCommandWorkingDirectory>
 		<DebugCommand></DebugCommand>
+		<DebugArguments></DebugArguments>
 		<ExePathCommand></ExePathCommand>
 		<DebugSln></DebugSln>
 		<UseVisualStudioEnvBat>false</UseVisualStudioEnvBat>
@@ -34,9 +35,10 @@
 		</AdditionalIncludePaths>
 		<Defines>
 			<Define>TENX_PARSER</Define>
-			<Define>__unix__</Define>
+			<Define></Define>
 			<Define>VLIB_ON_CRT</Define>
-			<Define>__linux__</Define>
+			<Define>_WIN32</Define>
+			<Define>VLIB_PLATFORM_NT</Define>
 		</Defines>
 		<ConfigProperties>
 			<ConfigAndPlatform>
