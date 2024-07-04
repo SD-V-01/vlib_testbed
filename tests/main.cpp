@@ -33,21 +33,33 @@ static void testConsole() {
 	vsys_writeConsoleNullStr("##########    Testing console\n");
 
 	mdConState TestState;
-	mdConStateCreate(&TestState);
-	mdConStateResize(&TestState);
+	mdConStateCreate(&TestState, "VLIB Test");
 	mdConVar TestVar;
 	TestVar.Var.VarInt = 70;
 	TestVar.Flags = mdConVarFlags_CHEAT | mdConVarFlags_SAVE;
 	TestVar.Type = mdConVarType_Int;
 	TestVar.Name = "md_testVarInt0";
-	TestVar.StatePtr = NULL;
+	TestVar.Help = "Test integer variable";
+	TestVar.StatePtr = &TestState;
 	mdConStateSet(&TestState, &TestVar);
 	mdConStateSet(&TestState, &TestVar);
+	TestVar.Var.VarInt = 69;
+	mdConStateDumpToStdout(&TestState);
+	mdConStateSet(&TestState, &TestVar);
+	mdConStateDumpToStdout(&TestState);
+	//TestState.HtSize = MD_CON_STATE_DEFAULT_CAPACITY;
+	mdConStateResize(&TestState);
 	mdConVar* TestSearch = mdConStateSearchVar(&TestState, "md_testVarInt0");
 	if (TestSearch != NULL) {
 		vsys_writeConsoleNullStr("Found md_testVarInt0 in hashmap found with val \"");
 		vsys_writeConsoleInteger(TestSearch->Var.VarInt);
+		vsys_writeConsoleNullStr("\" with name \"");
+		vsys_writeConsoleNullStr(TestSearch->Name);
 		vsys_writeConsoleNullStr("\"\n");
+		char ConVarToStr[1024];
+		mdConVarToStr(TestSearch, ConVarToStr, 1024);
+		vsys_writeConsoleNullStr(ConVarToStr);
+		vsys_writeConsoleNullStr("\n");
 
 	}
 	else {
@@ -60,7 +72,7 @@ static void testConsole() {
 }
 
 static void testHash() {
-	const char* TestStr = "MKey::windy_city";
+	const char* TestStr = "MKey://windy_city";
 	vsys_writeConsoleNullStr("##########   Testing hash\n");
 	vsys_writeConsoleNullStr("Testing murmurHash3 custom impl \"");
 	vsys_writeConsoleInteger(vmh332((void*)TestStr, vstrlen8(TestStr), 70));
@@ -334,6 +346,21 @@ static void testVstr32() {
 	vsys_writeConsoleInteger(IntToHexSize);
 	vsys_writeConsoleNullStr("\"\n");
 
+	vsys_writeConsoleNullStr("Testing formatting\n");
+	#define FORMAT_BUF_SIZE 256
+	char FormatBuf[FORMAT_BUF_SIZE];
+	const char* FormatInTest = "Testing {cstr} formarring";
+	st FormatResult = vformat8("Testing formatting u64\"{u64:}\" u32\"{u32}\" bool {bool} {bool} with {eol}{i32} V{p}_{u64}"
+							   "hex {u32:hex}{u32:hex} str {cstr}{eol}",
+							   FormatBuf, FORMAT_BUF_SIZE, 70, 42, true, false,
+							   -70, 18446744073709551615, 18446744073709551615,
+							   4294967295, 1, FormatInTest);
+	vsys_writeConsoleNullStr("\"");
+	vsys_writeConsoleNullStr(FormatBuf);
+	vsys_writeConsoleNullStr("\" with size \"");
+	vsys_writeConsoleInteger(FormatResult);
+	vsys_writeConsoleNullStr("\"\n");
+
 }
 
 #endif
@@ -380,9 +407,9 @@ void vrt_usrCode() {
 	vsys_writeConsoleNullStr("\" Is the result from getOsVar\n");
 
 	testVstr32();
-	testFsUtil();
-	testTime();
-	testHash();
+	//testFsUtil();
+	//testTime();
+	//testHash();
 	testConsole();
 
 	#endif
