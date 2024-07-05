@@ -44,9 +44,9 @@ static void testConsole() {
 	mdConStateSet(&TestState, &TestVar);
 	mdConStateSet(&TestState, &TestVar);
 	TestVar.Var.VarInt = 69;
-	mdConStateDumpToStdout(&TestState);
+	//mdConStateDumpToStdout(&TestState);
 	mdConStateSet(&TestState, &TestVar);
-	mdConStateDumpToStdout(&TestState);
+	//mdConStateDumpToStdout(&TestState);
 	//TestState.HtSize = MD_CON_STATE_DEFAULT_CAPACITY;
 	mdConStateResize(&TestState);
 	mdConVar* TestSearch = mdConStateSearchVar(&TestState, "md_testVarInt0");
@@ -350,15 +350,17 @@ static void testVstr32() {
 	#define FORMAT_BUF_SIZE 256
 	char FormatBuf[FORMAT_BUF_SIZE];
 	const char* FormatInTest = "Testing {cstr} formarring";
-	st FormatResult = vformat8("Testing formatting u64\"{u64:}\" u32\"{u32}\" bool {bool} {bool} with {eol}{i32} V{p}_{u64}"
+	st FormatResult = vformat8("Testing formatting {u64} u64\"{u64:}\" u32\"{u32}\" bool {bool} {bool} with {eol}{i32} V{p}_{u64}"
 							   "hex {u32:hex}{u32:hex} str {cstr}{eol}",
-							   FormatBuf, FORMAT_BUF_SIZE, 70, 42, true, false,
-							   -70, 18446744073709551615, 18446744073709551615,
+							   FormatBuf, FORMAT_BUF_SIZE, 18446744073709551615U, 70, 42, true, false,
+							   -70, 18446744073709551615U, 18446744073709551615U,
 							   4294967295, 1, FormatInTest);
 	vsys_writeConsoleNullStr("\"");
 	vsys_writeConsoleNullStr(FormatBuf);
 	vsys_writeConsoleNullStr("\" with size \"");
 	vsys_writeConsoleInteger(FormatResult);
+	vsys_writeConsoleNullStr("\" strlen \"");
+	vsys_writeConsoleInteger(vstrlen8(FormatBuf));
 	vsys_writeConsoleNullStr("\"\n");
 
 }
@@ -408,8 +410,8 @@ void vrt_usrCode() {
 
 	testVstr32();
 	//testFsUtil();
-	//testTime();
-	//testHash();
+	testTime();
+	testHash();
 	testConsole();
 
 	#endif
