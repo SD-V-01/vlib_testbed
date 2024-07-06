@@ -22,7 +22,7 @@ linker_c = clang
 bin_folder = bin
 vlib_folder = v
 
-rt_flags = -O2 -g -DVLIB_REMOVE_TOSTR_FUNC -DVSYS_DEBUG -pthread -fPIC -I $(vlib_folder) -nostdlib -fno-exceptions -fno-builtin
+rt_flags = -O2 -g -DVSYS_DEBUG -pthread -fPIC -I $(vlib_folder) -nostdlib -fno-exceptions -fno-builtin
 rt_link = 
 
 # compiling
@@ -56,3 +56,18 @@ $(vlib_folder)/mimalloc/stats.c $(vlib_folder)/mimalloc/prim/prim.c\
 : tests/main.c |> $(compiler_c) -c %f -o %o $(rt_flags) |> binc/%B.o
 
 : binc/*.o |> $(linker_c) $(rt_link) %f -o %o |> binc/vlibc_test
+
+# windows comiling
+
+win_flags = -O2 -g -DVSYS_DEBUG -I $(vlib_folder) -nostdlib -fno-exceptions -fno-builtin
+win_compiler = x86_64-w64-mingw32-gcc
+
+#: foreach $(vlib_folder)/*.c |> $(win_compiler) -c %f -o %o $(win_flags) |> bin_win32/%B.o
+#
+#: foreach $(vlib_folder)/mimalloc/alloc.c $(vlib_folder)/mimalloc/alloc-aligned.c\
+#$(vlib_folder)/mimalloc/alloc-posix.c $(vlib_folder)/mimalloc/arena.c $(vlib_folder)/mimalloc/bitmap.c\
+#$(vlib_folder)/mimalloc/heap.c $(vlib_folder)/mimalloc/init.c $(vlib_folder)/mimalloc/libc.c\
+#$(vlib_folder)/mimalloc/options.c $(vlib_folder)/mimalloc/os.c $(vlib_folder)/mimalloc/page.c\
+#$(vlib_folder)/mimalloc/random.c $(vlib_folder)/mimalloc/segment.c $(vlib_folder)/mimalloc/segment-map.c\
+#$(vlib_folder)/mimalloc/stats.c $(vlib_folder)/mimalloc/prim/prim.c\
+#|> $(win_compiler) -c %f -o %o $(win_flags) |> bin_win32/%B.o
