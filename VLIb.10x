@@ -35,10 +35,11 @@
 		</AdditionalIncludePaths>
 		<Defines>
 			<Define>TENX_PARSER</Define>
-			<Define></Define>
+			<Define>VLIB_ANDROID</Define>
 			<Define>VLIB_ON_CRT</Define>
-			<Define>_WIN32</Define>
-			<Define>VLIB_PLATFORM_NT</Define>
+			<Define></Define>
+			<Define>__linux__</Define>
+			<Define>VLIB_USE_OXR</Define>
 		</Defines>
 		<ConfigProperties>
 			<ConfigAndPlatform>

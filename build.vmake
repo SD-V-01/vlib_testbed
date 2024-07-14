@@ -22,8 +22,8 @@ linker_c = clang
 bin_folder = bin
 vlib_folder = v
 
-rt_flags = -O2 -g -DVSYS_DEBUG -pthread -fPIC -I $(vlib_folder) -nostdlib -fno-exceptions -fno-builtin
-rt_link = 
+rt_flags = -O2 -g -DVSYS_DEBUG -pthread -fPIC -I $(vlib_folder) -nostdlib -fno-exceptions -fno-builtin -march=x86-64-v3 -maes
+rt_link =
 
 # compiling
 : foreach $(vlib_folder)/*.cpp |> $(compiler) -DVLIB_ON_CRT -c %f -o %o $(rt_flags) |> $(bin_folder)/%B.o

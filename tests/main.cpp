@@ -18,6 +18,7 @@
 #include "mdio.h"
 #include "mdos.h"
 #include "vhash.h"
+#include "mdhud.h"
 
 //#define REMOVE_USRCODE
 
@@ -29,6 +30,19 @@ void vrt_preInitUsr(){
 }
 
 #ifndef REMOVE_USRCODE
+static void testMdhud() {
+	vsys_writeConsoleNullStr("##########    Testing mdHud\n");
+	mdHudCommandBuffer CmdBuffer;
+	mdHudCreateCommandBuffer(&CmdBuffer, MD_HUD_COMMAND_BUFFER_DEFAULT_SIZE);
+	mdHudDumpToStdoutCommandBuffer(&CmdBuffer);
+	mdHudCheckSizeCommandBuffer(&CmdBuffer, 1024);
+	//mdHudPopLastCommandBuffer(&CmdBuffer);
+	mdHudDumpToStdoutCommandBuffer(&CmdBuffer);
+
+	mdHudDestroyCommandBuffer(&CmdBuffer);
+
+}
+
 static void testConsole() {
 	vsys_writeConsoleNullStr("##########    Testing console\n");
 
@@ -413,6 +427,7 @@ void vrt_usrCode() {
 	testTime();
 	testHash();
 	testConsole();
+	testMdhud();
 
 	#endif
 
