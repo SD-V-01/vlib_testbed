@@ -30,6 +30,18 @@ void vrt_preInitUsr(){
 }
 
 #ifndef REMOVE_USRCODE
+static void testMemExtras() {
+	VDLOG("Test", "Machine has {u64} bytes of free memory", vGetTotalRam());
+	VDLOG("Test", "Machine has {u64} bytes of free mdSystemInfo memory", mdsysFreeRam());
+	VDLOG("Test", "Machine has {u64} bytes of buffer mdSystemInfo memory", mdsysBufferRam());
+	VDLOG("Test", "Machine has {u64} bytes of shared mdSystemInfo memory", mdsysSharedRam());
+	VDLOG("Test", "Machine has {u64} bytes of free swap mdSystemInfo memory", mdsysFreeSwap());
+	VDLOG("Test", "Machine has {u64} bytes of total swap mdSystemInfo memory", mdsysTotalSwap());
+	VDLOG("Test", "Machine has {u64} uptime", mdsysUptime());
+	VDLOG("Test", "Machine has {u64} processes running", mdsysTotalProcesses());
+
+}
+
 static void testMdhud() {
 	vsys_writeConsoleNullStr("##########    Testing mdHud\n");
 	mdHudCommandBuffer CmdBuffer;
@@ -80,6 +92,10 @@ static void testConsole() {
 		vsys_writeConsoleNullStr("Could not find md_testVarInt0\n");
 
 	}
+
+	mdConStateFmt(&TestState, "Testing", "Testing standalone console {u64}", mdConSeverity_none, 70);
+
+	mdConStateDumpDbToSelfe(&TestState);
 
 	mdConStateDestroy(&TestState);
 
@@ -407,6 +423,7 @@ void vrt_usrCode() {
 	testVMem(4096000);
 	testVMem(16384000);
 	testVMem(262144000);
+	testMemExtras();
 
 	testIntegers();
 
@@ -422,12 +439,12 @@ void vrt_usrCode() {
 	vsys_writeConsoleNullStr(Var);
 	vsys_writeConsoleNullStr("\" Is the result from getOsVar\n");
 
-	testVstr32();
+	//testVstr32();
 	//testFsUtil();
-	testTime();
-	testHash();
+	//testTime();
+	//testHash();
 	testConsole();
-	testMdhud();
+	//testMdhud();
 
 	#endif
 
