@@ -19,3 +19,4 @@ bin/*
 .vmake
 /bin
 /binc
+/vkmyth.o

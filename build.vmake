@@ -25,8 +25,39 @@ vlib_folder = v
 rt_flags = -O2 -g -DVLIB_ON_CRT -DVSYS_DEBUG -pthread -fPIC -I $(vlib_folder) -nostdlib -nostdinc++ -fno-exceptions -fno-builtin -march=x86-64-v3 -maes
 rt_link =
 
+: v/vkmyth.h.in v/vkmyth.c.in |> python3 v/vkmyth_generate.py v/vk.xml %o %f |> v/vulkan/vkmyth.h v/vulkan/vkmyth.c
+#: v/vkmyth.c.in |> cp %f %o |> v/vkmyth.c
+: v/vulkan/vkmyth.c v/vulkan/vkmyth.h |> $(compiler_c) -c v/vulkan/vkmyth.c -o %o $(rt_flags) |> vkmyth.o
+
 # compiling
-: foreach $(vlib_folder)/*.cpp |> $(compiler) -c %f -o %o $(rt_flags) |> $(bin_folder)/%B.o
+: v/mdvk.cpp v/vulkan/vkmyth.h |> $(compiler) -c %1f -o %o $(rt_flags) |> $(bin_folder)/%1B.o
+
+: foreach v/base.cpp \
+v/cpp_compiler.cpp \
+v/lz4.cpp \
+v/lz4hc.cpp \
+v/mderror.cpp \
+v/mdhud.cpp \
+v/mdinit.cpp \
+v/mdio.cpp \
+v/mdmath.cpp \
+v/mdosc.cpp \
+v/mdos.cpp \
+v/mdsch.cpp \
+v/mdswapchain.cpp \
+v/mythalloc.cpp \
+v/system.cpp \
+v/system_linux.cpp \
+v/system_win32.cpp \
+v/vhash.cpp \
+v/VHatesOpenxr.cpp \
+v/vmem.cpp \
+v/vrt.cpp \
+v/vstr32.cpp \
+v/vsystemalloc.cpp \
+v/vtostr.cpp \
+v/vxxhash.cpp \
+|> $(compiler) -c %f -o %o $(rt_flags) |> $(bin_folder)/%B.o
 
 : foreach $(vlib_folder)/mimalloc/alloc.c $(vlib_folder)/mimalloc/alloc-aligned.c\
 $(vlib_folder)/mimalloc/alloc-posix.c $(vlib_folder)/mimalloc/arena.c $(vlib_folder)/mimalloc/bitmap.c\
@@ -39,7 +70,7 @@ $(vlib_folder)/mimalloc/stats.c $(vlib_folder)/mimalloc/prim/prim.c\
 : tests/main.cpp |> $(compiler) -c %f -o %o $(rt_flags) |> $(bin_folder)/%B.o
 
 # linking
-: $(bin_folder)/*.o |> $(linker) $(rt_link) -nostdlib++ %f -o %o |> $(bin_folder)/vlib_test
+: $(bin_folder)/*.o vkmyth.o |> $(linker) $(rt_link) -nostdlib++ %f -o %o |> $(bin_folder)/vlib_test
 
 # c testing
 
@@ -51,11 +82,39 @@ $(vlib_folder)/mimalloc/random.c $(vlib_folder)/mimalloc/segment.c $(vlib_folder
 $(vlib_folder)/mimalloc/stats.c $(vlib_folder)/mimalloc/prim/prim.c\
 |> $(compiler_c) -c %f -o %o $(rt_flags) |> binc/%B.o
 
-: foreach $(vlib_folder)/*.c |> $(compiler_c) -c %f -o %o $(rt_flags) |> binc/%B.o
+
+: v/mdvk.c v/vulkan/vkmyth.h |> $(compiler_c) -c %1f -o %o $(rt_flags) |> binc/%1B.o
+
+: foreach v/base.c \
+v/cpp_compiler.c \
+v/lz4.c \
+v/lz4hc.c \
+v/mderror.c \
+v/mdhud.c \
+v/mdinit.c \
+v/mdio.c \
+v/mdmath.c \
+v/mdosc.c \
+v/mdos.c \
+v/mdsch.c \
+v/mdswapchain.c \
+v/mythalloc.c \
+v/system.c \
+v/system_linux.c \
+v/system_win32.c \
+v/vhash.c \
+v/VHatesOpenxr.c \
+v/vmem.c \
+v/vrt.c \
+v/vstr32.c \
+v/vsystemalloc.c \
+v/vtostr.c \
+v/vxxhash.c \
+|> $(compiler_c) -c %f -o %o $(rt_flags) |> binc/%B.o
 
 : tests/main.c |> $(compiler_c) -c %f -o %o $(rt_flags) |> binc/%B.o
 
-: binc/*.o |> $(linker_c) $(rt_link) %f -o %o |> binc/vlibc_test
+: binc/*.o vkmyth.o |> $(linker_c) $(rt_link) %f -o %o |> binc/vlibc_test
 
 # windows comiling
 

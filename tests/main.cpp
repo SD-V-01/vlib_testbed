@@ -199,7 +199,6 @@ static void testVulkan() {
 		else {
 			vsys_writeConsoleNullStr("Could not find instance ext \"VK_KHR_surface\" !!\n");
 
-
 		}
 
 		if (mdvkIsInstanceLayerPresent("VK_LAYER_VALVE_steam_overlay_64", NULL, NULL, NULL)) {
@@ -429,7 +428,7 @@ void vrt_usrCode() {
 
 	//vsys_breakpoint();
 
-	//testVulkan();
+	testVulkan();
 
 	vsys_writeConsoleNullStr("##########   Testing vsys_getOsVar\n");
 	#define OSVAR_SIZE 64
@@ -443,7 +442,7 @@ void vrt_usrCode() {
 	//testFsUtil();
 	//testTime();
 	//testHash();
-	testConsole();
+	//testConsole();
 	//testMdhud();
 
 	#endif
