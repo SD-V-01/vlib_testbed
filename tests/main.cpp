@@ -428,7 +428,7 @@ void vrt_usrCode() {
 
 	//vsys_breakpoint();
 
-	testVulkan();
+	//testVulkan();
 
 	vsys_writeConsoleNullStr("##########   Testing vsys_getOsVar\n");
 	#define OSVAR_SIZE 64

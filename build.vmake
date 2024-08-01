@@ -25,9 +25,12 @@ vlib_folder = v
 rt_flags = -O2 -g -DVLIB_ON_CRT -DVSYS_DEBUG -pthread -fPIC -I $(vlib_folder) -nostdlib -nostdinc++ -fno-exceptions -fno-builtin -march=x86-64-v3 -maes
 rt_link =
 
+: v/xrmyth.h.in v/xrmyth.c.in |> python3 v/xrmyth_generate.py v/xr.xml %o %f |> v/openxr/xrmyth.h v/openxr/xrmyth.c
+
 : v/vkmyth.h.in v/vkmyth.c.in |> python3 v/vkmyth_generate.py v/vk.xml %o %f |> v/vulkan/vkmyth.h v/vulkan/vkmyth.c
 #: v/vkmyth.c.in |> cp %f %o |> v/vkmyth.c
 : v/vulkan/vkmyth.c v/vulkan/vkmyth.h |> $(compiler_c) -c v/vulkan/vkmyth.c -o %o $(rt_flags) |> vkmyth.o
+: v/openxr/xrmyth.c v/openxr/xrmyth.h |> $(compiler_c) -c v/openxr/xrmyth.c -o %o $(rt_flags) |> xrmyth.o
 
 # compiling
 : v/mdvk.cpp v/vulkan/vkmyth.h |> $(compiler) -c %1f -o %o $(rt_flags) |> $(bin_folder)/%1B.o
